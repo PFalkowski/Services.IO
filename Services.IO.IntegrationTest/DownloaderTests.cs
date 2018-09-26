@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Services.IO.Test
@@ -25,11 +26,11 @@ namespace Services.IO.Test
         //    Assert.IsTrue(result.Length > 100);
         //}
         [Fact]
-        public void DownloaderDownloadsContent()
+        public async Task DownloaderDownloadsContent()
         {
             const string example = "http://example.com";
             var tested = new Downloader();
-            var result = tested.GetBytesAsync(new Uri(example)).Result;
+            var result = await tested.GetBytesAsync(new Uri(example));
             Assert.True(result.Length > 100);
         }
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Services.IO.Test
@@ -20,11 +21,11 @@ namespace Services.IO.Test
 
 
         [Fact]
-        public void UnzipperUnzzipsCorrectly()
+        public async Task UnzipperUnzzipsCorrectly()
         {
             var tested = new Unzipper();
-            var result = tested.UnzipAsync(Input);
-            Assert.True(string.Equals(ExpectedFileContent, result.Result.First().Value, StringComparison.InvariantCulture));
+            var result = await tested.UnzipAsync(Input);
+            Assert.True(string.Equals(ExpectedFileContent, result.First().Value, StringComparison.InvariantCulture));
         }
 
         [Fact]
