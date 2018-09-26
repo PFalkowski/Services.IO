@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Unzipper, NetHttpDownloader, Csv Serializer/Deserializer, FileProvider, DirectoryProvider</Description>
+    <Authors>Piotr Falkowski</Authors>
+    <Company>Piotr Falkowski</Company>
+    <Copyright>Piotr Falkowski © 2018</Copyright>
+    <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/PFalkowski/Services.IO</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/PFalkowski/Services.IO</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>IO, Unzip, Download, Serialize, Deserialize, Read, File, Directory</PackageTags>
   </PropertyGroup>
 
 </Project>
