@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Services.IO.Test
 {
-    public class DownloaderIntegrationTests
+    public class DownloaderTests
     {
 
         ////[Fact]
