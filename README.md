@@ -8,7 +8,7 @@ Handy-dandy unbloater for ease of testability of other parts of your system, tha
 ```c#
         // Unzipping
         
-        byte[] Input => new byte[] { 80, 75, 3, 4, 20, 0, 0, 0, 0, 0, 249,
+        var input = new byte[] { 80, 75, 3, 4, 20, 0, 0, 0, 0, 0, 249,
                 96, 107, 71, 32, 124, 203, 240, 12, 0, 0, 0, 12, 0, 0, 0, 11, 0,
                 0, 0, 90, 105, 112, 84, 101, 115, 116, 46, 116, 120, 116, 84, 101,
                 115, 116, 90, 105, 112, 112, 70, 105, 108, 101, 80, 75, 1, 2, 20,
@@ -17,17 +17,17 @@ Handy-dandy unbloater for ease of testability of other parts of your system, tha
                 0, 0, 0, 90, 105, 112, 84, 101, 115, 116, 46, 116, 120, 116, 80,
                 75, 5, 6, 0, 0, 0, 0, 1, 0, 1, 0, 57, 0, 0, 0, 53, 0, 0, 0, 0, 0 };
 
-        string ExpectedFileContent = "TestZippFile";
+        var expectedFileContent = "TestZippFile";
 
 
         var service = new Unzipper();
-        var result = await service.UnzipAsync(Input);
+        var result = await service.UnzipAsync(input);
 ```        
 
 ```c#
         // Downloading
         
-        const string example = "http://example.com";
+        var example = "http://example.com";
         var service = new Downloader();
         var result = await service.GetBytesAsync(new Uri(example));
 ```    
