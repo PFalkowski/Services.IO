@@ -7,6 +7,7 @@ Handy-dandy unbloater for ease of testability of other parts of your system, tha
 
 ```c#
         // Unzipping
+        
         byte[] Input => new byte[] { 80, 75, 3, 4, 20, 0, 0, 0, 0, 0, 249,
                 96, 107, 71, 32, 124, 203, 240, 12, 0, 0, 0, 12, 0, 0, 0, 11, 0,
                 0, 0, 90, 105, 112, 84, 101, 115, 116, 46, 116, 120, 116, 84, 101,
@@ -19,15 +20,31 @@ Handy-dandy unbloater for ease of testability of other parts of your system, tha
         string ExpectedFileContent = "TestZippFile";
 
 
-        var tested = new Unzipper();
-        var result = await tested.UnzipAsync(Input);
-
+        var service = new Unzipper();
+        var result = await service.UnzipAsync(Input);
 ```        
 
 ```c#
         // Downloading
+        
         const string example = "http://example.com";
-        var tested = new Downloader();
-        var result = await tested.GetBytesAsync(new Uri(example));
-
+        var service = new Downloader();
+        var result = await service.GetBytesAsync(new Uri(example));
 ```    
+
+```c#
+        // Reading file
+        
+        var file = "myFile.txt";
+        var service = new FileService();
+        var contents = service.ReadAllText(file.FullName);            
+```   
+
+```c#
+        // Reading directory to dictionary
+        
+        var pattern = "*.txt";
+        var service = new DirectoryService(new FileService());
+        var actual = await service.ReadTopDirectoryAsync(file1.Directory.FullName, pattern);
+            
+```   
