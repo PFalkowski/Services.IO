@@ -13,6 +13,49 @@ namespace Services.IO.IntegrationTest
         private const string content1 = "test content /n/r line 2.1,!@#";
         private const string content2 = "test2 content2 2/n/r2 2line2 2.1,!@#2";
         private const string extension = "testextension";
+        private const string extensionForNonExistingFiles = "NonExistantExtension";
+
+        [Fact]
+        public  void ReadTopDirectoryReturnsEmptyCollectionWhenDirectoryEmpty()
+        {
+            // Arrange
+            var currentDirectory = new DirectoryInfo("./");
+            var pattern = $"*.{extension}";
+            var filesInDir = currentDirectory.EnumerateFiles(pattern).ToList();
+            filesInDir.ForEach(file => file.Delete());
+
+            var tested = new DirectoryService(new FileService());
+
+            // Act
+
+            var actual =  tested.ReadTopDirectory("./", pattern);
+            // Assert
+
+            Assert.False(actual.Any());
+
+            // Cleanup
+        }
+
+        [Fact]
+        public async Task ReadTopDirectoryAsyncReturnsEmptyCollectionWhenDirectoryEmpty()
+        {
+            // Arrange
+            var currentDirectory = new DirectoryInfo("./");
+            var pattern = $"*.{extension}";
+            var filesInDir = currentDirectory.EnumerateFiles(pattern).ToList();
+            filesInDir.ForEach(file => file.Delete());
+
+            var tested = new DirectoryService(new FileService());
+
+            // Act
+
+            var actual = await tested.ReadTopDirectoryAsync("./", pattern);
+            // Assert
+
+            Assert.False(actual.Any());
+
+            // Cleanup
+        }
 
         [Fact]
         public async Task ReadTopDirectoryAsyncReadsDirectory()

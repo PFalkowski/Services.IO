@@ -21,20 +21,17 @@ namespace Services.IO
             var dataTemp = new Dictionary<string, string>();
 
             var filesInDir = directory.EnumerateFiles(pattern).ToList();
-            if (filesInDir.Count != 0)
+            if (filesInDir.Count == 0) return dataTemp;
+            //readProgress?.StartForIterations(filesInDir.Count);
+            foreach (var file in filesInDir)
             {
-                //readProgress?.StartForIterations(filesInDir.Count);
-                foreach (var file in filesInDir)
+                if (!dataTemp.ContainsKey(file.Name))
                 {
-                    if (!dataTemp.ContainsKey(file.Name))
-                    {
-                        dataTemp.Add(file.Name, FileProvider.ReadAllText(file.FullName));
-                    }
-                    //readProgress?.ReportProgress();
+                    dataTemp.Add(file.Name, FileProvider.ReadAllText(file.FullName));
                 }
-                return dataTemp;
+                //readProgress?.ReportProgress();
             }
-            return null;
+            return dataTemp;
         }
 
         public async Task<Dictionary<string, string>> ReadTopDirectoryAsync(string path, string pattern = "*.*", CancellationToken token = default(CancellationToken))
@@ -45,20 +42,17 @@ namespace Services.IO
             var dataTemp = new Dictionary<string, string>();
 
             var filesInDir = directory.EnumerateFiles(pattern).ToList();
-            if (filesInDir.Count != 0)
+            if (filesInDir.Count == 0) return dataTemp;
+            //readProgress?.StartForIterations(filesInDir.Count);
+            foreach (var file in filesInDir)
             {
-                //readProgress?.StartForIterations(filesInDir.Count);
-                foreach (var file in filesInDir)
+                if (!dataTemp.ContainsKey(file.Name))
                 {
-                    if (!dataTemp.ContainsKey(file.Name))
-                    {
-                        dataTemp.Add(file.Name, await FileProvider.ReadAllTextAsync(file.FullName, token).ConfigureAwait(false));
-                    }
-                    //readProgress?.ReportProgress();
+                    dataTemp.Add(file.Name, await FileProvider.ReadAllTextAsync(file.FullName, token).ConfigureAwait(false));
                 }
-                return dataTemp;
+                //readProgress?.ReportProgress();
             }
-            return null;
+            return dataTemp;
         }
     }
 }

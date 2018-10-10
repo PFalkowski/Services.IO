@@ -12,6 +12,7 @@
     <RepositoryUrl>https://github.com/PFalkowski/Services.IO</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>IO, Unzip, Download, Serialize, Deserialize, Read, File, Directory</PackageTags>
+    <PackageReleaseNotes>Change behavior when directory empty - now ReadTopDir will return empty collection insteead of null. Add Async methods</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
