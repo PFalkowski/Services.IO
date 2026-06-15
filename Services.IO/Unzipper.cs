@@ -12,44 +12,44 @@ namespace Services.IO
     {
         public Dictionary<string, string> Unzip(IEnumerable<byte> zippedInput)
         {
-            if (zippedInput == null) throw new ArgumentNullException(nameof(zippedInput));
-            var bytes = zippedInput as byte[] ?? zippedInput.ToArray();
-            if (bytes.Length == 0) throw new ArgumentException("Input must not be empty.", nameof(zippedInput));
-
-            var buffer = new Dictionary<string, string>();
+            Validate(zippedInput, out var bytes);
             using (var archive = new ZipArchive(new MemoryStream(bytes)))
             {
-                foreach (var entry in archive.Entries)
-                {
-                    using (var reader = new StreamReader(entry.Open()))
-                    {
-                        buffer.Add(entry.FullName, reader.ReadToEnd());
-                    }
-                }
+                return ReadEntries(archive);
             }
-            return buffer;
         }
 
         public async Task<Dictionary<string, string>> UnzipAsync(IEnumerable<byte> zippedInput, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            if (zippedInput == null) throw new ArgumentNullException(nameof(zippedInput));
-            var bytes = zippedInput as byte[] ?? zippedInput.ToArray();
-            if (bytes.Length == 0) throw new ArgumentException("Input must not be empty.", nameof(zippedInput));
-
-            var buffer = new Dictionary<string, string>();
-            using (var archive = new ZipArchive(new MemoryStream(bytes)))
+            Validate(zippedInput, out var bytes);
+            return await Task.Run(() =>
             {
-                foreach (var entry in archive.Entries)
+                using (var archive = new ZipArchive(new MemoryStream(bytes)))
                 {
-                    using (var reader = new StreamReader(entry.Open()))
-                    {
-                        buffer.Add(entry.FullName, await reader.ReadToEndAsync().ConfigureAwait(false));
-                    }
+                    return ReadEntries(archive);
+                }
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static void Validate(IEnumerable<byte> input, out byte[] bytes)
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            bytes = input as byte[] ?? input.ToArray();
+            if (bytes.Length == 0) throw new ArgumentException("Input must not be empty.", nameof(input));
+        }
+
+        private static Dictionary<string, string> ReadEntries(ZipArchive archive)
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var entry in archive.Entries)
+            {
+                using (var reader = new StreamReader(entry.Open()))
+                {
+                    result.Add(entry.FullName, reader.ReadToEnd());
                 }
             }
-            return buffer;
+            return result;
         }
     }
 }
