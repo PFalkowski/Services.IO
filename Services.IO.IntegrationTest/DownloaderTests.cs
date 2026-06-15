@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Services.IO.Test
+namespace Services.IO.IntegrationTest
 {
     public class DownloaderTests
     {

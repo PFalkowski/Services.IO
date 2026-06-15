@@ -2,17 +2,31 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Unzipper, NetHttpDownloader, Csv Serializer/Deserializer, FileProvider, DirectoryProvider</Description>
+    <PackageId>Services.IO</PackageId>
+    <Version>1.1.0</Version>
     <Authors>Piotr Falkowski</Authors>
     <Company>Piotr Falkowski</Company>
-    <Copyright>Piotr Falkowski © 2018</Copyright>
-    <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+    <Product>Services.IO</Product>
+    <Description>Testable abstractions for common I/O operations: file read/write, directory enumeration, ZIP extraction, and HTTP download.</Description>
+    <Copyright>Piotr Falkowski © 2026</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>IO, Unzip, Download, File, Directory, abstraction, testability</PackageTags>
     <PackageProjectUrl>https://github.com/PFalkowski/Services.IO</PackageProjectUrl>
     <RepositoryUrl>https://github.com/PFalkowski/Services.IO</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageTags>IO, Unzip, Download, Serialize, Deserialize, Read, File, Directory</PackageTags>
-    <PackageReleaseNotes>Change behavior when directory empty - now ReadTopDir will return empty collection insteead of null. Add Async methods</PackageReleaseNotes>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
+  </ItemGroup>
 
 </Project>
