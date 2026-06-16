@@ -79,7 +79,7 @@ namespace Services.IO.IntegrationTest
 
             // Act
 
-            var actual = await tested.ReadTopDirectoryAsync(file1.Directory.FullName, pattern);
+            var actual = await tested.ReadTopDirectoryAsync(file1.Directory!.FullName, pattern);
             // Assert
 
             Assert.Equal(expected, actual);
@@ -111,7 +111,7 @@ namespace Services.IO.IntegrationTest
 
             // Act
 
-            var actual =  tested.ReadTopDirectory(file1.Directory.FullName, pattern);
+            var actual =  tested.ReadTopDirectory(file1.Directory!.FullName, pattern);
             // Assert
 
             Assert.Equal(expected, actual);

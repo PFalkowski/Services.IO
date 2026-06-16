@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,13 +19,48 @@ namespace Services.IO.Test
 
         private const string ExpectedFileContent = "TestZippFile";
 
+        [Fact]
+        public void Unzip_UnzipsCorrectly()
+        {
+            var tested = new Unzipper();
+            var result = tested.Unzip(Input);
+            Assert.Equal(ExpectedFileContent, result.First().Value);
+        }
 
         [Fact]
-        public async Task UnzipperUnzzipsCorrectly()
+        public void Unzip_NullInput_ThrowsArgumentNullException()
+        {
+            var tested = new Unzipper();
+            Assert.Throws<ArgumentNullException>(() => tested.Unzip(null!));
+        }
+
+        [Fact]
+        public void Unzip_EmptyInput_ThrowsArgumentException()
+        {
+            var tested = new Unzipper();
+            Assert.Throws<ArgumentException>(() => tested.Unzip(Array.Empty<byte>()));
+        }
+
+        [Fact]
+        public async Task UnzipAsync_UnzipsCorrectly()
         {
             var tested = new Unzipper();
             var result = await tested.UnzipAsync(Input);
-            Assert.True(string.Equals(ExpectedFileContent, result.First().Value, StringComparison.InvariantCulture));
+            Assert.Equal(ExpectedFileContent, result.First().Value);
+        }
+
+        [Fact]
+        public async Task UnzipAsync_NullInput_ThrowsArgumentNullException()
+        {
+            var tested = new Unzipper();
+            await Assert.ThrowsAsync<ArgumentNullException>(() => tested.UnzipAsync(null!));
+        }
+
+        [Fact]
+        public async Task UnzipAsync_EmptyInput_ThrowsArgumentException()
+        {
+            var tested = new Unzipper();
+            await Assert.ThrowsAsync<ArgumentException>(() => tested.UnzipAsync(Array.Empty<byte>()));
         }
 
         [Fact]

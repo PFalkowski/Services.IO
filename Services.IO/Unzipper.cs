@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -10,52 +10,46 @@ namespace Services.IO
 {
     public class Unzipper : IUnzipper
     {
-        // TODO: add to interface, unit test
         public Dictionary<string, string> Unzip(IEnumerable<byte> zippedInput)
         {
-            var enumerated = zippedInput.ToArray();
-            if (!enumerated.Any()) throw new ArgumentException(nameof(zippedInput));
-
-            var buffer = new Dictionary<string, string>();
-            using (var archive = new ZipArchive(new MemoryStream(enumerated)))
+            Validate(zippedInput, out var bytes);
+            using (var archive = new ZipArchive(new MemoryStream(bytes)))
             {
-                //ProgressReporter?.StartForIterations(archive.Entries.Count);
-                foreach (var entry in archive.Entries)
-                {
-                    var temp = entry.Open();
-                    using (var reader = new StreamReader(temp))
-                    {
-                        var result = reader.ReadToEnd();
-                        buffer.Add(entry.FullName, result);
-                    }
-                    //ProgressReporter?.ReportProgress();
-                }
+                return ReadEntries(archive);
             }
-            return buffer;
         }
+
         public async Task<Dictionary<string, string>> UnzipAsync(IEnumerable<byte> zippedInput, CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var enumerated = zippedInput.ToArray();
-            if (!enumerated.Any()) throw new ArgumentException(nameof(zippedInput));
-
-            var buffer = new Dictionary<string, string>();
-            using (var archive = new ZipArchive(new MemoryStream(enumerated)))
+            Validate(zippedInput, out var bytes);
+            return await Task.Run(() =>
             {
-                //ProgressReporter?.StartForIterations(archive.Entries.Count);
-                foreach (var entry in archive.Entries)
+                using (var archive = new ZipArchive(new MemoryStream(bytes)))
                 {
-                    var temp = entry.Open();
-                    using (var reader = new StreamReader(temp))
-                    {
-                        var result = await reader.ReadToEndAsync().ConfigureAwait(false);
-                        buffer.Add(entry.FullName, result);
-                    }
-                    //ProgressReporter?.ReportProgress();
+                    return ReadEntries(archive);
+                }
+            }, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static void Validate(IEnumerable<byte> input, out byte[] bytes)
+        {
+            if (input == null) throw new ArgumentNullException(nameof(input));
+            bytes = input as byte[] ?? input.ToArray();
+            if (bytes.Length == 0) throw new ArgumentException("Input must not be empty.", nameof(input));
+        }
+
+        private static Dictionary<string, string> ReadEntries(ZipArchive archive)
+        {
+            var result = new Dictionary<string, string>();
+            foreach (var entry in archive.Entries)
+            {
+                using (var reader = new StreamReader(entry.Open()))
+                {
+                    result.Add(entry.FullName, reader.ReadToEnd());
                 }
             }
-            return buffer;
+            return result;
         }
     }
 }
